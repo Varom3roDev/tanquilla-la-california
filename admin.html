@@ -40,8 +40,9 @@
     <!-- PANTALLA 1: ACCESO POR CONTRASEÑA -->
     <div id="login-view" class="min-h-screen flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-xl border border-slate-200 max-w-sm w-full p-8 text-center space-y-6">
-            <div class="w-14 h-14 rounded-2xl bg-slate-900 text-amber-400 flex items-center justify-center text-2xl mx-auto shadow-md">
-                <i class="fa-solid fa-lock"></i>
+            <div class="flex flex-col items-center justify-center mb-2">
+                <img src="logo-acecs.png" alt="Asoeste Calisur" class="h-16 w-auto object-contain drop-shadow-sm transition-transform hover:scale-105">
+                <span class="text-xs font-black text-slate-800 tracking-wider uppercase mt-1">Asoeste Calisur</span>
             </div>
             
             <div>
@@ -83,23 +84,27 @@
     <div id="admin-view" class="hidden min-h-screen flex flex-col">
 
         <!-- BARRA SUPERIOR ADMIN -->
-        <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-40">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+        <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-40 shadow-sm">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 py-2 min-h-[76px] flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-xl bg-amber-400 text-slate-900 flex items-center justify-center font-bold text-sm shadow">
-                        <i class="fa-solid fa-shield-halved"></i>
+                    <div class="flex flex-col items-center justify-center shrink-0">
+                        <img src="logo-acecs.png" alt="Asoeste Calisur" class="h-12 w-auto object-contain">
+                        <span class="text-[9px] font-black text-emerald-400 tracking-wider uppercase leading-none mt-0.5">Asoeste Calisur</span>
                     </div>
-                    <div>
-                        <span class="font-extrabold text-sm sm:text-base leading-none block">Comité Administrador</span>
+                    <div class="border-l border-slate-700 pl-3">
+                        <span class="font-extrabold text-sm sm:text-base leading-tight block text-white">Panel Administrador</span>
                         <span class="text-xs text-slate-400 font-mono">Tanquilla La California Sur</span>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-3">
-                    <a href="index.html" target="_blank" class="text-xs text-slate-300 hover:text-white px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 transition flex items-center gap-1.5 border border-slate-700">
-                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Ver Web Pública
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <button onclick="openWhatsAppReportModal()" class="text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white px-3 sm:px-4 py-2 rounded-xl transition flex items-center gap-1.5 shadow-md shadow-emerald-600/20">
+                        <i class="fa-brands fa-whatsapp text-sm"></i> <span class="hidden sm:inline">Boletín a</span> Rosalicia
+                    </button>
+                    <a href="index.html" target="_blank" class="text-xs text-slate-300 hover:text-white px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 transition flex items-center gap-1.5 border border-slate-700">
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> <span class="hidden md:inline">Ver Web Pública</span>
                     </a>
-                    <button onclick="handleLogout()" class="text-xs text-red-400 hover:text-red-300 px-3 py-1.5 rounded-lg bg-red-950/40 hover:bg-red-950/80 transition border border-red-900/60" title="Cerrar sesión">
+                    <button onclick="handleLogout()" class="text-xs text-red-400 hover:text-red-300 px-3 py-2 rounded-xl bg-red-950/40 hover:bg-red-950/80 transition border border-red-900/60" title="Cerrar sesión">
                         <i class="fa-solid fa-power-off"></i>
                     </button>
                 </div>
@@ -108,6 +113,30 @@
 
         <!-- CONTENIDO PRINCIPAL -->
         <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex-1 space-y-8 w-full">
+
+            <!-- BANNER DE BOLETÍN OFICIAL PARA GRUPO ASOESTE CALISUR -->
+            <div class="bg-gradient-to-r from-emerald-950 via-slate-900 to-slate-900 rounded-3xl p-6 sm:p-7 text-white shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-5 border border-emerald-500/30">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 flex items-center justify-center text-2xl shrink-0">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold tracking-widest text-emerald-400 uppercase">Asoeste Calisur • Difusión Oficial</span>
+                            <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full font-semibold">1-Clic</span>
+                        </div>
+                        <h3 class="text-lg font-extrabold mt-0.5 text-white">Plantilla de Estado de Aportes para Rosalicia</h3>
+                        <p class="text-xs text-slate-300 mt-1 max-w-xl leading-relaxed">
+                            Genera el resumen oficial consolidado y envíalo automáticamente al WhatsApp de Rosalicia Romero para que ella lo comparta de forma inmediata en el grupo vecinal de Asoeste Calisur.
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 shrink-0">
+                    <button onclick="openWhatsAppReportModal()" class="w-full sm:w-auto px-5 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 transition">
+                        <i class="fa-solid fa-paper-plane"></i> Generar y Enviar Boletín
+                    </button>
+                </div>
+            </div>
 
             <!-- RESUMEN DE CONTROL FINANCIERO -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -536,7 +565,176 @@
             });
         }
 
+        // ==========================================
+        // PLANTILLA BOLETÍN WHATSAPP ASOESTE CALISUR
+        // ==========================================
+        function generateBoletinText() {
+            const confirmados = (allAportes || []).filter(a => a.estado === 'confirmado');
+            const pendientes = (allAportes || []).filter(a => a.estado === 'pendiente');
+            
+            const totalRecaudado = confirmados.reduce((acc, curr) => acc + (parseFloat(curr.monto_usd) || 0), 0);
+            const meta = 600;
+            const faltante = Math.max(0, meta - totalRecaudado);
+            const pct = Math.min(100, Math.round((totalRecaudado / meta) * 100));
+
+            // Formatear fecha y hora actual en Venezuela
+            const ahora = new Date();
+            const fechaStr = ahora.toLocaleDateString('es-VE', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            const horaStr = ahora.toLocaleTimeString('es-VE', { hour: '2-digit', minute: '2-digit', hour12: true });
+            const fechaCap = fechaStr.charAt(0).toUpperCase() + fechaStr.slice(1);
+
+            let txt = `📢 *BOLETÍN INFORMATIVO // TANQUILLA LA CALIFORNIA SUR*\n`;
+            txt += `🏢 *ASOESTE CALISUR*\n`;
+            txt += `🗓️ _${fechaCap} • ${horaStr}_\n\n`;
+            txt += `Estimados vecinos de La California Sur, compartimos el estado actualizado de la recaudación vecinal para la reparación integral de la tanquilla:\n\n`;
+            txt += `🎯 *Meta Presupuestada:* $${meta.toFixed(2)} USD\n`;
+            txt += `💰 *Total Recaudado (Listo):* $${totalRecaudado.toFixed(2)} USD (${pct}% de la meta)\n`;
+            txt += `⏳ *Falta para la Meta:* $${faltante.toFixed(2)} USD\n`;
+            txt += `👥 *Vecinos / Familias que han aportado:* ${confirmados.length}\n\n`;
+
+            txt += `📋 *RELACIÓN DE APORTES CONFIRMADOS:*\n`;
+            if (confirmados.length === 0) {
+                txt += `• (Aún no hay aportes confirmados registrados)\n`;
+            } else {
+                confirmados.forEach((c, idx) => {
+                    const met = c.metodo === 'pago_movil' ? 'Pago Móvil' : 'Efectivo';
+                    txt += `${idx + 1}. *${c.nombre_vecino}* (${c.calle_casa}) — *$${parseFloat(c.monto_usd).toFixed(2)} USD* [${met}]\n`;
+                });
+            }
+
+            if (pendientes.length > 0) {
+                const totalPend = pendientes.reduce((acc, curr) => acc + (parseFloat(curr.monto_usd) || 0), 0);
+                txt += `\n🔍 *Aportes en Proceso de Verificación:* ${pendientes.length} aporte(s) por *$${totalPend.toFixed(2)} USD*.\n`;
+            }
+
+            txt += `\n🤝 *¡Muchísimas gracias a todas las familias que ya se han sumado!* Su colaboración hace posible recuperar el paso vial y la seguridad peatonal de nuestra urbanización.\n\n`;
+            txt += `🌐 *Para consultar el muro comunitario o registrar tu aporte:*\n`;
+            txt += `https://varom3rodev.github.io/tanquilla-la-california/`;
+
+            return txt;
+        }
+
+        function openWhatsAppReportModal() {
+            const txt = generateBoletinText();
+            document.getElementById('boletin-text-area').value = txt;
+            document.getElementById('boletin-feedback').classList.add('hidden');
+            document.getElementById('modal-boletin-whatsapp').classList.remove('hidden');
+        }
+
+        function closeWhatsAppReportModal() {
+            document.getElementById('modal-boletin-whatsapp').classList.add('hidden');
+        }
+
+        async function sendBoletinDirecto() {
+            const btn = document.getElementById('btn-send-boletin-directo');
+            const feedback = document.getElementById('boletin-feedback');
+            const message = document.getElementById('boletin-text-area').value.trim();
+
+            if (!message) {
+                alert("El mensaje no puede estar vacío.");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Enviando a Rosalicia...`;
+
+            try {
+                const resp = await fetch('https://wfuynlfknawjkhevooal.supabase.co/functions/v1/jarvis-gateway/api/webhook/tanquilla-reporte', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message, dest: '584143114736' })
+                });
+
+                const data = await resp.json();
+                if (data.ok) {
+                    feedback.className = "p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-2";
+                    feedback.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 text-base"></i> ¡Boletín enviado exitosamente al WhatsApp de Rosalicia Romero (+58 414 311 4736) y copia a Víctor!`;
+                    feedback.classList.remove('hidden');
+                } else {
+                    throw new Error(data.error || 'No se pudo enviar');
+                }
+            } catch (err) {
+                console.error(err);
+                feedback.className = "p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs font-semibold flex items-center gap-2";
+                feedback.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-amber-600 text-base"></i> Nota: No se pudo conectar directo. Puedes usar el botón "Abrir en WhatsApp" para enviarlo con 1 clic.`;
+                feedback.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Enviar Directo a Rosalicia`;
+            }
+        }
+
+        function openBoletinWhatsAppLink() {
+            const message = document.getElementById('boletin-text-area').value.trim();
+            const url = `https://wa.me/584143114736?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+
+        function copyBoletinText() {
+            const txt = document.getElementById('boletin-text-area').value;
+            const btn = document.getElementById('btn-copy-boletin');
+            navigator.clipboard.writeText(txt).then(() => {
+                const orig = btn.innerHTML;
+                btn.innerHTML = `<i class="fa-solid fa-check text-emerald-600"></i> ¡Copiado!`;
+                setTimeout(() => { btn.innerHTML = orig; }, 2000);
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', checkAuth);
     </script>
+
+    <!-- MODAL BOLETÍN WHATSAPP PARA ASOESTE CALISUR -->
+    <div id="modal-boletin-whatsapp" class="hidden fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-7 shadow-2xl border border-slate-200 flex flex-col max-h-[92vh] space-y-4 animate-in fade-in zoom-in-95 duration-200">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="font-black text-slate-900 text-base sm:text-lg">Boletín Oficial de Aportes</h3>
+                            <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded-full">Asoeste Calisur</span>
+                        </div>
+                        <p class="text-xs text-slate-500">Para Rosalicia Romero (+58 414 311 4736) difundir en el grupo vecinal</p>
+                    </div>
+                </div>
+                <button onclick="closeWhatsAppReportModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div id="boletin-feedback" class="hidden"></div>
+
+            <div class="flex-1 flex flex-col space-y-1.5 min-h-[220px]">
+                <div class="flex items-center justify-between">
+                    <label class="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Texto de la Plantilla (Editable si lo deseas):</label>
+                    <button onclick="copyBoletinText()" id="btn-copy-boletin" class="text-xs font-semibold text-slate-600 hover:text-brand-600 flex items-center gap-1 transition">
+                        <i class="fa-regular fa-copy"></i> Copiar Texto
+                    </button>
+                </div>
+                <textarea id="boletin-text-area" class="w-full flex-1 min-h-[240px] sm:min-h-[280px] p-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-sans text-slate-800 leading-relaxed focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 font-mono"></textarea>
+            </div>
+
+            <div class="pt-2 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <span class="text-[11px] text-slate-400 font-medium text-center sm:text-left">
+                    <i class="fa-solid fa-lock text-emerald-600 mr-1"></i> Despacho automático vía Nodo 24/7
+                </span>
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <button onclick="openBoletinWhatsAppLink()" class="flex-1 sm:flex-initial px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition" title="Abrir en WhatsApp Web o Móvil">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> Abrir en WhatsApp
+                    </button>
+                    <button onclick="sendBoletinDirecto()" id="btn-send-boletin-directo" class="flex-1 sm:flex-initial px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 shadow-md shadow-emerald-600/20 transition">
+                        <i class="fa-solid fa-paper-plane"></i> Enviar Directo a Rosalicia
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
