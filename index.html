@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recaudación Tanquilla La California Sur | Comunidad Unida</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Supabase JS Client CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#16a34a',
+                            600: '#15803d',
+                            700: '#166534',
+                            800: '#14532d',
+                        },
+                        navy: {
+                            800: '#0f172a',
+                            900: '#020617',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 55%, #064e3b 100%);
+        }
+        .progress-glow {
+            box-shadow: 0 0 20px rgba(22, 163, 74, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- BARRA SUPERIOR DE ALERTA COMUNITARIA -->
+    <aside aria-label="Aviso comunitario" class="bg-brand-600 text-white text-xs sm:text-sm font-semibold py-2 px-4 text-center flex items-center justify-center gap-2 shadow-sm">
+        <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-300 animate-ping"></span>
+        <span>Campaña Oficial Vecinal // Reparación de Tanquilla • La California Sur</span>
+    </aside>
+
+    <!-- NAVEGACIÓN -->
+    <nav class="bg-white/95 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-brand-600 text-white flex items-center justify-center font-bold text-lg shadow-md shadow-brand-600/20">
+                    <i class="fa-solid fa-road"></i>
+                </div>
+                <div>
+                    <span class="font-extrabold text-slate-900 tracking-tight text-lg block leading-none">Tanquilla California Sur</span>
+                    <span class="text-xs text-slate-500 font-medium">Comité Pro-Reparación Vecinal</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3 sm:gap-6 text-sm font-semibold">
+                <a href="#meta" class="hidden sm:inline text-slate-600 hover:text-brand-600 transition">Avance</a>
+                <a href="#como-aportar" class="hidden sm:inline text-slate-600 hover:text-brand-600 transition">Datos de Pago</a>
+                <a href="#reportar-form" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-xl shadow-md shadow-brand-600/20 text-xs sm:text-sm transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-hand-holding-dollar"></i> Reportar Aporte
+                </a>
+                <a href="admin.html" class="text-slate-400 hover:text-slate-700 transition py-1.5 px-2 rounded-lg hover:bg-slate-100 text-xs flex items-center gap-1" title="Panel Administrador">
+                    <i class="fa-solid fa-lock text-[11px] text-amber-600"></i> <span class="hidden md:inline">Admin</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="gradient-hero text-white py-14 sm:py-20 px-4 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-3xl mx-auto text-center relative z-10">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-emerald-300 text-xs sm:text-sm font-semibold mb-5">
+                <i class="fa-solid fa-users"></i> Proyecto Vecinal 2026 • Meta: $600 USD
+            </div>
+            
+            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight mb-4">
+                Reparación Urgente de la <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-200">Tanquilla</span> de Nuestra Comunidad
+            </h1>
+            
+            <p class="text-sm sm:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed mb-8">
+                El deterioro de la tanquilla representa un riesgo vial y peatonal para todos los vecinos y vehículos de la urbanización. Con el aporte voluntario de quienes puedan colaborar, reuniremos el presupuesto necesario de <strong>$600</strong> para repararla con materiales resistentes y duraderos.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+                <a href="#reportar-form" class="w-full sm:w-auto px-7 py-3.5 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-xl shadow-lg shadow-brand-500/30 transition flex items-center justify-center gap-2 text-sm sm:text-base">
+                    <i class="fa-solid fa-circle-check"></i>
+                    Registrar Mi Aporte
+                </a>
+                <a href="#como-aportar" class="w-full sm:w-auto px-6 py-3.5 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl border border-white/20 backdrop-blur-md transition flex items-center justify-center gap-2 text-sm sm:text-base">
+                    <i class="fa-solid fa-wallet"></i>
+                    Ver Cuentas de Pago
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ESTADO DE LA RECAUDACIÓN (EN VIVO CON SUPABASE) -->
+    <section id="meta" class="-mt-8 relative z-20 max-w-4xl mx-auto px-4">
+        <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/60 p-6 sm:p-8 border border-slate-100">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+                <div>
+                    <span class="text-xs uppercase font-bold tracking-wider text-brand-600 bg-brand-50 px-3 py-1 rounded-md">Transparencia en Vivo</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">Avance de la Recaudación</h2>
+                </div>
+                <div class="text-left sm:text-right">
+                    <span class="text-xs text-slate-500 font-semibold block">Presupuesto Requerido</span>
+                    <span class="text-2xl sm:text-3xl font-black text-slate-900">$600 <span class="text-xs font-semibold text-slate-500">USD</span></span>
+                </div>
+            </div>
+
+            <!-- BARRA DE PROGRESO DINÁMICA -->
+            <div class="relative w-full bg-slate-100 rounded-2xl h-8 overflow-hidden p-1 border border-slate-200">
+                <div id="progress-bar" class="h-full bg-gradient-to-r from-emerald-500 to-brand-500 rounded-xl transition-all duration-1000 ease-out progress-glow flex items-center justify-end pr-3 text-white text-xs font-black" style="width: 2%;">
+                    2%
+                </div>
+            </div>
+
+            <!-- CONTADORES RESUMEN -->
+            <div class="grid grid-cols-3 gap-2 sm:gap-4 mt-5 text-center">
+                <div class="bg-slate-50 p-3 sm:p-4 rounded-2xl border border-slate-100">
+                    <span class="text-xs text-slate-500 font-medium block">Recaudado</span>
+                    <span id="collected-amount" class="text-xl sm:text-2xl font-black text-brand-600">$10</span>
+                </div>
+                <div class="bg-slate-50 p-3 sm:p-4 rounded-2xl border border-slate-100">
+                    <span class="text-xs text-slate-500 font-medium block">Faltante</span>
+                    <span id="missing-amount" class="text-xl sm:text-2xl font-black text-slate-800">$590</span>
+                </div>
+                <div class="bg-slate-50 p-3 sm:p-4 rounded-2xl border border-slate-100">
+                    <span class="text-xs text-slate-500 font-medium block">Colaboraciones</span>
+                    <span id="total-aportes-count" class="text-xl sm:text-2xl font-black text-slate-900">1 <span class="text-xs font-semibold text-slate-500">vecino</span></span>
+                </div>
+            </div>
+
+            <div id="live-indicator" class="mt-4 flex items-center justify-between text-xs text-slate-400 border-t border-slate-100 pt-3">
+                <span class="flex items-center gap-1.5 text-emerald-600 font-medium">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Base de datos sincronizada en tiempo real
+                </span>
+                <button onclick="loadAportesFromSupabase()" class="text-slate-500 hover:text-brand-600 transition flex items-center gap-1">
+                    <i class="fa-solid fa-arrows-rotate"></i> Actualizar
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FORMULARIO DE REPORTE DE APORTE -->
+    <section id="reportar-form" class="py-12 sm:py-16 max-w-3xl mx-auto px-4">
+        <div class="bg-white rounded-3xl shadow-lg border border-slate-200 overflow-hidden">
+            <div class="bg-slate-900 text-white p-6 sm:p-8">
+                <span class="text-xs uppercase font-bold tracking-wider text-emerald-400 bg-white/10 px-3 py-1 rounded-md">Registro Rápido</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold mt-2">Registra tu Colaboración</h2>
+                <p class="text-sm text-slate-300 mt-1">
+                    Para mantener las cuentas claras, ingresa los datos de tu aporte. Si fue en Pago Móvil, solo necesitamos los últimos 4 dígitos.
+                </p>
+            </div>
+
+            <form id="aporte-form" onsubmit="handleFormSubmit(event)" class="p-6 sm:p-8 space-y-5">
+                <!-- Nombre / Familia -->
+                <div>
+                    <label for="nombre_vecino" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                        Nombre del Vecino o Familia <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="nombre_vecino" required placeholder="Ej: Familia Romero / Carlos Mendoza" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm">
+                </div>
+
+                <!-- Calle y Casa / Número -->
+                <div>
+                    <label for="calle_casa" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                        Calle y Número / Nombre de la Casa <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="calle_casa" required placeholder="Ej: Calle 3, Casa #14 / Quinta Bella" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm">
+                </div>
+
+                <!-- Selector de Método -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                        Método Utilizado <span class="text-red-500">*</span>
+                    </label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button type="button" id="btn-method-pm" onclick="setMethod('pago_movil')" class="py-3 px-4 rounded-xl border-2 border-brand-500 bg-brand-50 text-brand-700 font-bold text-sm flex items-center justify-center gap-2 transition">
+                            <i class="fa-solid fa-mobile-screen"></i> Pago Móvil
+                        </button>
+                        <button type="button" id="btn-method-ef" onclick="setMethod('efectivo')" class="py-3 px-4 rounded-xl border-2 border-slate-200 bg-white text-slate-600 font-semibold text-sm flex items-center justify-center gap-2 transition hover:bg-slate-50">
+                            <i class="fa-solid fa-money-bill-wave"></i> Efectivo (USD)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Monto Aportado (USD) -->
+                <div>
+                    <label for="monto_usd" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                        Monto Aportado (Equivalente en Dólares USD) <span class="text-red-500">*</span>
+                    </label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-3 text-slate-400 font-bold">$</span>
+                        <input type="number" id="monto_usd" step="0.5" min="1" required placeholder="Ej: 20" class="w-full pl-8 pr-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm font-semibold">
+                    </div>
+                    <p class="text-xs text-slate-400 mt-1">Cualquier monto suma para la meta de $600.</p>
+                </div>
+
+                <!-- Campo dinámico: Últimos 4 dígitos Pago Móvil -->
+                <div id="campo-pago-movil">
+                    <label for="referencia_4dig" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                        Últimos 4 Números de Referencia (Pago Móvil) <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="referencia_4dig" maxlength="6" placeholder="Ej: 4891" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm font-mono tracking-widest">
+                    <p class="text-xs text-slate-400 mt-1">Solo los últimos dígitos para verificar el comprobante bancario.</p>
+                </div>
+
+                <!-- Campo dinámico: Efectivo (Receptor) -->
+                <div id="campo-efectivo" class="hidden">
+                    <label for="receptor_efectivo" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                        ¿A quién o a cuál vocero le entregó el efectivo? <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="receptor_efectivo" placeholder="Ej: Entregado a Víctor / Vocero de Calle 3" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm">
+                </div>
+
+                <!-- Botón de Envío -->
+                <button type="submit" id="btn-submit-aporte" class="w-full py-4 bg-brand-600 hover:bg-brand-700 text-white font-extrabold rounded-2xl shadow-lg shadow-brand-600/30 transition flex items-center justify-center gap-2 text-base">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    Registrar Mi Aporte Oficial
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- DATOS DE PAGO Y CÓMO APORTAR -->
+    <section id="como-aportar" class="py-12 bg-slate-100/80 border-y border-slate-200 px-4">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center max-w-xl mx-auto mb-10">
+                <span class="text-xs uppercase font-bold tracking-wider text-brand-600 bg-brand-50 px-3 py-1 rounded-md">Canales de Recepción</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">Datos para Realizar tu Aporte</h2>
+                <p class="text-slate-600 text-sm mt-1">
+                    Puedes aportar por Pago Móvil en Bolívares (a tasa oficial BCV) o en Efectivo directamente con los voceros autorizados.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Tarjeta Pago Móvil -->
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                    <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+                        <span class="font-bold text-slate-900 text-base flex items-center gap-2">
+                            <i class="fa-solid fa-mobile-screen text-brand-600"></i> Pago Móvil (Bolívares)
+                        </span>
+                        <span class="text-xs bg-slate-100 text-slate-600 font-bold px-2 py-0.5 rounded">Tasa BCV</span>
+                    </div>
+
+                    <div class="space-y-3 text-sm">
+                        <div class="flex justify-between items-center p-2.5 bg-slate-50 rounded-xl">
+                            <span class="text-slate-500 font-medium">Banco:</span>
+                            <span class="font-bold text-slate-800">BBVA Provincial (0108)</span>
+                        </div>
+                        <div class="flex justify-between items-center p-2.5 bg-slate-50 rounded-xl">
+                            <span class="text-slate-500 font-medium">Teléfono:</span>
+                            <span class="font-mono font-bold text-slate-800">0414-311-4736</span>
+                            <button onclick="copyText('04143114736', this)" class="text-xs text-brand-600 font-semibold hover:underline">
+                                <i class="fa-regular fa-copy"></i> Copiar
+                            </button>
+                        </div>
+                        <div class="flex justify-between items-center p-2.5 bg-slate-50 rounded-xl">
+                            <span class="text-slate-500 font-medium">Cédula:</span>
+                            <span class="font-mono font-bold text-slate-800">V-11.725.480</span>
+                            <button onclick="copyText('11725480', this)" class="text-xs text-brand-600 font-semibold hover:underline">
+                                <i class="fa-regular fa-copy"></i> Copiar
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-3 italic">* Titular: Rosalicia Romero</p>
+                </div>
+
+                <!-- Tarjeta Efectivo -->
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+                            <span class="font-bold text-slate-900 text-base flex items-center gap-2">
+                                <i class="fa-solid fa-money-bill-wave text-emerald-600"></i> Aporte en Efectivo (USD)
+                            </span>
+                            <span class="text-xs bg-emerald-50 text-emerald-700 font-bold px-2 py-0.5 rounded">Efectivo</span>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-4 leading-relaxed">
+                            Si prefieres colaborar en efectivo, puedes entregarlo directamente a los voceros de tu calle o a la comisión vecinal.
+                        </p>
+                        <div class="bg-emerald-50 p-3.5 rounded-xl border border-emerald-100 text-xs text-emerald-800 space-y-1">
+                            <p class="font-semibold"><i class="fa-solid fa-check text-emerald-600 mr-1"></i> Se anota de inmediato en la lista comunitaria.</p>
+                            <p class="font-semibold"><i class="fa-solid fa-check text-emerald-600 mr-1"></i> Puedes registrarlo tú mismo en el formulario arriba.</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <a href="https://wa.me/584143114736?text=Hola%2C%20soy%20vecino%20de%20La%20California%20Sur%20y%20quiero%20entregar%20mi%20aporte%20en%20efectivo%20para%20la%20tanquilla." target="_blank" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition flex items-center justify-center gap-2 text-xs sm:text-sm">
+                            <i class="fa-brands fa-whatsapp text-base"></i> Coordinar Entrega por WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ALCANCE DE LA REPARACIÓN (SIMPLIFICADO) -->
+    <section class="py-12 max-w-4xl mx-auto px-4">
+        <div class="text-center max-w-xl mx-auto mb-8">
+            <span class="text-xs uppercase font-bold tracking-wider text-brand-600 bg-brand-50 px-3 py-1 rounded-md">Presupuesto $600 USD</span>
+            <h2 class="text-2xl font-extrabold text-slate-900 mt-2">¿En qué se utilizarán los $600?</h2>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto text-center">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col items-center">
+                <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-3 text-xl">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h3 class="font-bold text-slate-900 text-base mb-1.5">Marco y Tapa</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">Herrería y materiales para soportar paso peatonal incluso vehicular.</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col items-center">
+                <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center mb-3 text-xl">
+                    <i class="fa-solid fa-person-digging"></i>
+                </div>
+                <h3 class="font-bold text-slate-900 text-base mb-1.5">Mano de Obra</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">Personal calificado, traslados de materiales y supervisión comunitaria directa.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- LISTADO EN VIVO DE APORTES VECINALES (TRANSPARENCIA) -->
+    <section class="py-12 bg-white border-t border-slate-200 px-4">
+        <div class="max-w-4xl mx-auto">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+                <div>
+                    <span class="text-xs uppercase font-bold tracking-wider text-brand-600 bg-brand-50 px-3 py-1 rounded-md">Muro Comunitario</span>
+                    <h2 class="text-2xl font-extrabold text-slate-900 mt-1">Colaboraciones Registradas</h2>
+                </div>
+                <span class="text-xs text-slate-400">Actualizado automáticamente</span>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                    <thead>
+                        <tr class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
+                            <th class="py-3 px-3">Vecino / Familia</th>
+                            <th class="py-3 px-3">Calle / Casa</th>
+                            <th class="py-3 px-3">Método</th>
+                            <th class="py-3 px-3 text-right">Monto</th>
+                            <th class="py-3 px-3 text-center">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-aportes-body" class="divide-y divide-slate-100">
+                        <tr>
+                            <td colspan="5" class="py-6 text-center text-slate-400">
+                                <i class="fa-solid fa-spinner fa-spin mr-1"></i> Cargando aportes desde la base de datos...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL DE CONFIRMACIÓN / ÉXITO TRAS REGISTRAR -->
+    <div id="success-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 text-center shadow-2xl animate-in fade-in zoom-in-95">
+            <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl mx-auto mb-4">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 class="text-2xl font-extrabold text-slate-900 mb-1">¡Aporte Registrado!</h3>
+            <p id="modal-summary-text" class="text-slate-600 text-sm mb-6 leading-relaxed">
+                Tu colaboración ha sido guardada y el contador de recaudación se ha actualizado en tiempo real.
+            </p>
+            <div class="space-y-3">
+                <a id="btn-modal-whatsapp" href="#" target="_blank" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition flex items-center justify-center gap-2 text-sm shadow-md shadow-emerald-600/20">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Notificar al Comité por WhatsApp
+                </a>
+                <button onclick="closeModal()" class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-sm transition">
+                    Cerrar y Ver Progreso
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-navy-900 text-slate-400 py-10 px-4 border-t border-slate-800 text-center text-xs">
+        <div class="max-w-4xl mx-auto space-y-3">
+            <div class="flex items-center justify-center gap-2 text-white font-bold text-sm">
+                <i class="fa-solid fa-road text-emerald-400"></i>
+                <span>Comunidad Urbanización La California Sur</span>
+            </div>
+            <p class="max-w-md mx-auto text-slate-500">
+                Página comunitaria para la reparación de la tanquilla y seguridad de los vecinos.
+            </p>
+            <div class="pt-3 text-slate-600 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-2">
+                <span>© 2026 Comité Pro-Reparación Tanquilla. Cuentas claras y transparentes.</span>
+                <a href="admin.html" class="text-slate-400 hover:text-white transition inline-flex items-center gap-1.5 text-xs py-1 px-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700">
+                    <i class="fa-solid fa-lock text-[11px] text-amber-400"></i> Acceso Administrador
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- LOGICA SUPABASE Y JS -->
+    <script>
+        // CONFIGURACIÓN SUPABASE (API$BCV / Tanquilla Aportes)
+        const SUPABASE_URL = "https://wfuynlfknawjkhevooal.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndmdXlubGZrbmF3amtoZXZvb2FsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwNTk2OTAsImV4cCI6MjEwMDYzNTY5MH0.Pup4FUtdlupIM5CRDcWqKTtwV2K0Ty3Or4HH9CURQOM";
+        
+        const GOAL = 600; // Meta presupuestada: $600 USD
+        let currentMethod = 'pago_movil';
+        let supabaseClient = null;
+
+        if (window.supabase) {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        }
+
+        function setMethod(method) {
+            currentMethod = method;
+            const btnPm = document.getElementById('btn-method-pm');
+            const btnEf = document.getElementById('btn-method-ef');
+            const campoPm = document.getElementById('campo-pago-movil');
+            const campoEf = document.getElementById('campo-efectivo');
+            const inputRef = document.getElementById('referencia_4dig');
+            const inputRec = document.getElementById('receptor_efectivo');
+
+            if (method === 'pago_movil') {
+                btnPm.className = "py-3 px-4 rounded-xl border-2 border-brand-500 bg-brand-50 text-brand-700 font-bold text-sm flex items-center justify-center gap-2 transition";
+                btnEf.className = "py-3 px-4 rounded-xl border-2 border-slate-200 bg-white text-slate-600 font-semibold text-sm flex items-center justify-center gap-2 transition hover:bg-slate-50";
+                campoPm.classList.remove('hidden');
+                campoEf.classList.add('hidden');
+                inputRef.required = true;
+                inputRec.required = false;
+            } else {
+                btnEf.className = "py-3 px-4 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-700 font-bold text-sm flex items-center justify-center gap-2 transition";
+                btnPm.className = "py-3 px-4 rounded-xl border-2 border-slate-200 bg-white text-slate-600 font-semibold text-sm flex items-center justify-center gap-2 transition hover:bg-slate-50";
+                campoPm.classList.add('hidden');
+                campoEf.classList.remove('hidden');
+                inputRef.required = false;
+                inputRec.required = true;
+            }
+        }
+
+        async function loadAportesFromSupabase() {
+            if (!supabaseClient) return;
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('tanquilla_aportes')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) {
+                    console.error("Error al consultar Supabase:", error);
+                    return;
+                }
+
+                renderAportes(data || []);
+            } catch (err) {
+                console.error("Fallo de red con Supabase:", err);
+            }
+        }
+
+        function renderAportes(aportes) {
+            let totalConfirmado = 0;
+            let totalPendiente = 0;
+            let confirmadosCount = 0;
+
+            aportes.forEach(a => {
+                const m = parseFloat(a.monto_usd || 0);
+                if (a.estado === 'confirmado') {
+                    totalConfirmado += m;
+                    confirmadosCount++;
+                } else {
+                    totalPendiente += m;
+                }
+            });
+
+            // Actualizar contadores y barra
+            const pct = Math.min(100, Math.round((totalConfirmado / GOAL) * 100));
+            const missing = Math.max(0, GOAL - totalConfirmado);
+
+            const progressBar = document.getElementById('progress-bar');
+            progressBar.style.width = Math.max(pct, 2) + '%';
+            progressBar.textContent = pct + '%';
+
+            document.getElementById('collected-amount').textContent = '$' + totalConfirmado.toFixed(totalConfirmado % 1 === 0 ? 0 : 2);
+            document.getElementById('missing-amount').textContent = '$' + missing.toFixed(missing % 1 === 0 ? 0 : 2);
+            document.getElementById('total-aportes-count').innerHTML = `${confirmadosCount} <span class="text-xs font-semibold text-slate-500">confirmados</span>${totalPendiente > 0 ? ` <span class="text-[11px] text-amber-600 block sm:inline">($${totalPendiente.toFixed(0)} en revisión)</span>` : ''}`;
+
+            // Renderizar tabla
+            const tbody = document.getElementById('tabla-aportes-body');
+            if (!aportes || aportes.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-slate-400">Aún no hay aportes registrados. ¡Sé el primero en colaborar!</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = aportes.map(a => {
+                const dateStr = a.created_at ? new Date(a.created_at).toLocaleDateString('es-VE', { day: '2-digit', month: 'short' }) : 'Hoy';
+                const isPm = a.metodo === 'pago_movil';
+                const badgeMetodo = isPm 
+                    ? `<span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs font-semibold"><i class="fa-solid fa-mobile-screen mr-1"></i>Pago Móvil ${a.referencia_4dig ? `(*${a.referencia_4dig})` : ''}</span>`
+                    : `<span class="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded text-xs font-semibold"><i class="fa-solid fa-money-bill mr-1"></i>Efectivo</span>`;
+
+                const isConfirmado = a.estado === 'confirmado';
+                const badgeEstado = isConfirmado
+                    ? `<span class="inline-flex items-center gap-1 text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded text-xs font-bold border border-emerald-200">
+                           <i class="fa-solid fa-circle-check text-emerald-600"></i> Listo
+                       </span>`
+                    : `<span class="inline-flex items-center gap-1 text-amber-700 bg-amber-50 px-2 py-0.5 rounded text-xs font-semibold border border-amber-200" title="Pendiente de verificación bancaria">
+                           <i class="fa-solid fa-clock text-amber-600"></i> En revisión
+                       </span>`;
+
+                return `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="py-3 px-3 font-semibold text-slate-900">${escapeHtml(a.nombre_vecino)}</td>
+                        <td class="py-3 px-3 text-slate-600">${escapeHtml(a.calle_casa)}</td>
+                        <td class="py-3 px-3">${badgeMetodo}</td>
+                        <td class="py-3 px-3 text-right font-black text-brand-600">$${parseFloat(a.monto_usd).toFixed(0)}</td>
+                        <td class="py-3 px-3 text-center">${badgeEstado}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-aporte');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Guardando aporte...`;
+
+            const nombre = document.getElementById('nombre_vecino').value.trim();
+            const calleCasa = document.getElementById('calle_casa').value.trim();
+            const monto = parseFloat(document.getElementById('monto_usd').value);
+            const ref4 = currentMethod === 'pago_movil' ? document.getElementById('referencia_4dig').value.trim() : null;
+            const receptor = currentMethod === 'efectivo' ? document.getElementById('receptor_efectivo').value.trim() : null;
+
+            const payload = {
+                nombre_vecino: nombre,
+                calle_casa: calleCasa,
+                metodo: currentMethod,
+                monto_usd: monto,
+                referencia_4dig: ref4,
+                receptor_efectivo: receptor,
+                estado: 'pendiente'
+            };
+
+            try {
+                if (supabaseClient) {
+                    const { data, error } = await supabaseClient
+                        .from('tanquilla_aportes')
+                        .insert([payload]);
+
+                    if (error) {
+                        alert("Error al guardar: " + error.message);
+                        btn.disabled = false;
+                        btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Registrar Mi Aporte Oficial`;
+                        return;
+                    }
+                }
+
+                // Refrescar lista de inmediato
+                await loadAportesFromSupabase();
+
+                // Armar mensaje WhatsApp
+                const metodoStr = currentMethod === 'pago_movil' ? `Pago Móvil (Ref: ${ref4})` : `Efectivo (${receptor || 'Entregado a vocero'})`;
+                const waText = encodeURIComponent(
+                    `Hola Comité, acabo de registrar mi aporte para la reparación de la tanquilla:\n\n` +
+                    `👤 *Vecino/Familia:* ${nombre}\n` +
+                    `🏠 *Calle/Casa:* ${calleCasa}\n` +
+                    `💵 *Monto:* $${monto} USD\n` +
+                    `💳 *Método:* ${metodoStr}\n\n` +
+                    `Adjunto mi comprobante para la verificación comunitaria.`
+                );
+
+                document.getElementById('btn-modal-whatsapp').href = `https://wa.me/584143114736?text=${waText}`;
+                document.getElementById('modal-summary-text').innerHTML = `
+                    Gracias <strong>${escapeHtml(nombre)}</strong> de <strong>${escapeHtml(calleCasa)}</strong>.<br>
+                    Tu aporte de <strong>$${monto} USD</strong> ha sido recibido y está <strong>en revisión</strong> para cotejo del comité. Al ser validado aparecerá como <strong>(Listo)</strong> en la meta oficial.
+                `;
+
+                document.getElementById('success-modal').classList.remove('hidden');
+                document.getElementById('aporte-form').reset();
+                setMethod('pago_movil');
+            } catch (err) {
+                console.error(err);
+                alert("Ocurrió un error al procesar el aporte.");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Registrar Mi Aporte Oficial`;
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('success-modal').classList.add('hidden');
+        }
+
+        function copyText(text, btnElement) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalHtml = btnElement.innerHTML;
+                btnElement.innerHTML = '<i class="fa-solid fa-check text-emerald-600"></i> Copiado';
+                setTimeout(() => {
+                    btnElement.innerHTML = originalHtml;
+                }, 2000);
+            });
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>"']/g, function(m) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+            });
+        }
+
+        // Cargar aportes al iniciar
+        document.addEventListener('DOMContentLoaded', loadAportesFromSupabase);
+    </script>
+</body>
+</html>

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración • Tanquilla La California Sur</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Supabase JS Client CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            500: '#16a34a',
+                            600: '#15803d',
+                            700: '#166534',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans antialiased min-h-screen">
+
+    <!-- PANTALLA 1: ACCESO POR CONTRASEÑA -->
+    <div id="login-view" class="min-h-screen flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-xl border border-slate-200 max-w-sm w-full p-8 text-center space-y-6">
+            <div class="w-14 h-14 rounded-2xl bg-slate-900 text-amber-400 flex items-center justify-center text-2xl mx-auto shadow-md">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            
+            <div>
+                <h1 class="text-xl font-extrabold text-slate-900">Panel Administrador</h1>
+                <p class="text-xs text-slate-500 mt-1">Comité Pro-Reparación Tanquilla</p>
+            </div>
+
+            <form onsubmit="handleLogin(event)" class="space-y-4 text-left">
+                <div>
+                    <label for="password-input" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                        Contraseña de Acceso
+                    </label>
+                    <div class="relative">
+                        <input type="password" id="password-input" required placeholder="Ingresa la clave..." class="w-full pl-4 pr-11 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-800 text-sm">
+                        <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3.5 top-3 text-slate-400 hover:text-slate-700 transition" title="Mostrar u ocultar contraseña">
+                            <i id="toggle-eye-icon" class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="login-error" class="hidden text-xs text-red-600 bg-red-50 p-2.5 rounded-lg border border-red-200 text-center font-semibold">
+                    Contraseña incorrecta. Intenta nuevamente.
+                </div>
+
+                <button type="submit" class="w-full py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl transition text-sm flex items-center justify-center gap-2 shadow-md">
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i> Entrar al Panel
+                </button>
+            </form>
+
+            <div class="pt-2 border-t border-slate-100">
+                <a href="index.html" class="text-xs text-slate-500 hover:text-slate-800 transition flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-arrow-left"></i> Volver a la Landing Pública
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANTALLA 2: PANEL DE CONTROL ADMINISTRADOR -->
+    <div id="admin-view" class="hidden min-h-screen flex flex-col">
+
+        <!-- BARRA SUPERIOR ADMIN -->
+        <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-40">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-amber-400 text-slate-900 flex items-center justify-center font-bold text-sm shadow">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div>
+                        <span class="font-extrabold text-sm sm:text-base leading-none block">Comité Administrador</span>
+                        <span class="text-xs text-slate-400 font-mono">Tanquilla La California Sur</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <a href="index.html" target="_blank" class="text-xs text-slate-300 hover:text-white px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 transition flex items-center gap-1.5 border border-slate-700">
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Ver Web Pública
+                    </a>
+                    <button onclick="handleLogout()" class="text-xs text-red-400 hover:text-red-300 px-3 py-1.5 rounded-lg bg-red-950/40 hover:bg-red-950/80 transition border border-red-900/60" title="Cerrar sesión">
+                        <i class="fa-solid fa-power-off"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex-1 space-y-8 w-full">
+
+            <!-- RESUMEN DE CONTROL FINANCIERO -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Meta -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Meta Total</span>
+                    <span class="text-2xl font-black text-slate-900 font-mono mt-1 block">$600 <span class="text-xs font-normal text-slate-500">USD</span></span>
+                    <span class="text-xs text-slate-400 mt-1 block">Presupuesto requerido</span>
+                </div>
+
+                <!-- Recaudado Confirmado -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-emerald-500">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-emerald-700 uppercase tracking-wider">Confirmado (Listo)</span>
+                        <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                    </div>
+                    <span id="stat-confirmado" class="text-2xl font-black text-emerald-600 font-mono mt-1 block">$0</span>
+                    <span id="stat-confirmado-count" class="text-xs text-slate-500 mt-1 block">0 aportes válidos</span>
+                </div>
+
+                <!-- En Revisión -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-amber-500">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-amber-700 uppercase tracking-wider">Por Verificar</span>
+                        <i class="fa-solid fa-clock text-amber-500"></i>
+                    </div>
+                    <span id="stat-pendiente" class="text-2xl font-black text-amber-600 font-mono mt-1 block">$0</span>
+                    <span id="stat-pendiente-count" class="text-xs text-slate-500 mt-1 block">0 pendientes de validación</span>
+                </div>
+
+                <!-- Faltante Oficial -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Faltante Oficial</span>
+                    <span id="stat-faltante" class="text-2xl font-black text-slate-800 font-mono mt-1 block">$600</span>
+                    <span id="stat-avance-pct" class="text-xs text-slate-500 mt-1 block">0% recaudado</span>
+                </div>
+            </div>
+
+            <!-- GESTIÓN DE APORTES -->
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-6 border-b border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-xl font-extrabold text-slate-900">Validación de Aportes Vecinales</h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Revisa comprobantes y haz clic en "Validar" para que pasen a estado (Listo) en la web.</p>
+                    </div>
+
+                    <!-- Filtros de Estado -->
+                    <div class="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl border border-slate-200 text-xs font-semibold">
+                        <button onclick="setFilter('todos')" id="filter-todos" class="px-3 py-1.5 rounded-lg bg-white shadow-sm text-slate-900 transition">
+                            Todos (<span id="count-todos">0</span>)
+                        </button>
+                        <button onclick="setFilter('pendiente')" id="filter-pendiente" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-amber-500"></span> Por Verificar (<span id="count-pendientes">0</span>)
+                        </button>
+                        <button onclick="setFilter('confirmado')" id="filter-confirmado" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Confirmados (<span id="count-confirmados">0</span>)
+                        </button>
+                        <button onclick="loadAdminData()" class="ml-2 px-2.5 py-1.5 text-slate-500 hover:text-slate-800 transition" title="Refrescar datos">
+                            <i class="fa-solid fa-arrows-rotate"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tabla de Aportes -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
+                                <th class="py-3 px-4">Fecha</th>
+                                <th class="py-3 px-4">Vecino / Familia</th>
+                                <th class="py-3 px-4">Ubicación</th>
+                                <th class="py-3 px-4">Método y Detalle</th>
+                                <th class="py-3 px-4 text-right">Monto USD</th>
+                                <th class="py-3 px-4 text-center">Estado</th>
+                                <th class="py-3 px-4 text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-table-body" class="divide-y divide-slate-100 font-sans">
+                            <tr>
+                                <td colspan="7" class="py-10 text-center text-slate-400 font-medium">
+                                    <i class="fa-solid fa-spinner fa-spin mr-1"></i> Cargando aportes desde Supabase...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- REGISTRO MANUAL DIRECTO POR EL ADMINISTRADOR -->
+            <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+                <div class="mb-4">
+                    <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-plus-circle text-brand-600"></i> Registrar Aporte Manual Directo
+                    </h3>
+                    <p class="text-xs text-slate-500">Usa este formulario si recibes un pago en efectivo o transferencia directamente y quieres validarlo de una vez.</p>
+                </div>
+
+                <form onsubmit="handleManualSubmit(event)" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 items-end">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">Nombre / Familia</label>
+                        <input type="text" id="manual-nombre" required placeholder="Ej: Familia Blanco" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">Calle / Casa</label>
+                        <input type="text" id="manual-casa" required placeholder="Ej: Calle 2, #10" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">Método</label>
+                        <select id="manual-metodo" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold">
+                            <option value="efectivo">Efectivo ($ USD)</option>
+                            <option value="pago_movil">Pago Móvil</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">Monto ($ USD)</label>
+                        <input type="number" id="manual-monto" step="0.5" min="1" required placeholder="20" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold font-mono">
+                    </div>
+                    <div>
+                        <button type="submit" id="btn-manual-submit" class="w-full py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-xs transition shadow-sm flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-check"></i> Cargar Validado
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </main>
+
+        <!-- FOOTER ADMIN -->
+        <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-400 font-mono">
+            Comité Vecinal La California Sur • Panel de Validación • Clave: Vinici@11
+        </footer>
+    </div>
+
+    <!-- LOGICA SUPABASE Y ADMINISTRACION -->
+    <script>
+        const SUPABASE_URL = "https://wfuynlfknawjkhevooal.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndmdXlubGZrbmF3amtoZXZvb2FsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwNTk2OTAsImV4cCI6MjEwMDYzNTY5MH0.Pup4FUtdlupIM5CRDcWqKTtwV2K0Ty3Or4HH9CURQOM";
+        const GOAL = 600;
+        const ADMIN_PASS = "Vinici@11";
+
+        let supabaseClient = null;
+        let allAportes = [];
+        let currentFilter = 'todos';
+
+        if (window.supabase) {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        }
+
+        // CONTROL DE SESIÓN
+        function togglePasswordVisibility() {
+            const input = document.getElementById('password-input');
+            const icon = document.getElementById('toggle-eye-icon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fa-solid fa-eye-slash text-slate-700';
+            } else {
+                input.type = 'password';
+                icon.className = 'fa-solid fa-eye text-slate-400';
+            }
+        }
+
+        function checkAuth() {
+            const isAuth = sessionStorage.getItem('tanquilla_admin_auth') === 'true';
+            const loginView = document.getElementById('login-view');
+            const adminView = document.getElementById('admin-view');
+
+            if (isAuth) {
+                loginView.classList.add('hidden');
+                adminView.classList.remove('hidden');
+                loadAdminData();
+            } else {
+                loginView.classList.remove('hidden');
+                adminView.classList.add('hidden');
+            }
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const pass = document.getElementById('password-input').value.trim();
+            const errBox = document.getElementById('login-error');
+
+            if (pass === ADMIN_PASS) {
+                sessionStorage.setItem('tanquilla_admin_auth', 'true');
+                errBox.classList.add('hidden');
+                checkAuth();
+            } else {
+                errBox.classList.remove('hidden');
+                document.getElementById('password-input').value = '';
+                document.getElementById('password-input').focus();
+            }
+        }
+
+        function handleLogout() {
+            sessionStorage.removeItem('tanquilla_admin_auth');
+            checkAuth();
+        }
+
+        // CARGA DE DATOS DESDE SUPABASE
+        async function loadAdminData() {
+            if (!supabaseClient) return;
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('tanquilla_aportes')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) {
+                    console.error("Error al consultar Supabase:", error);
+                    return;
+                }
+
+                allAportes = data || [];
+                renderAdminDashboard();
+            } catch (err) {
+                console.error("Fallo de red:", err);
+            }
+        }
+
+        // RENDERIZADO DEL DASHBOARD Y TABLA
+        function renderAdminDashboard() {
+            let confirmado = 0;
+            let pendiente = 0;
+            let countConf = 0;
+            let countPend = 0;
+
+            allAportes.forEach(a => {
+                const m = parseFloat(a.monto_usd || 0);
+                if (a.estado === 'confirmado') {
+                    confirmado += m;
+                    countConf++;
+                } else {
+                    pendiente += m;
+                    countPend++;
+                }
+            });
+
+            const faltante = Math.max(0, GOAL - confirmado);
+            const pct = Math.min(100, Math.round((confirmado / GOAL) * 100));
+
+            // Actualizar tarjetas estadísticas
+            document.getElementById('stat-confirmado').textContent = '$' + confirmado.toFixed(0);
+            document.getElementById('stat-confirmado-count').textContent = `${countConf} aportes validados`;
+
+            document.getElementById('stat-pendiente').textContent = '$' + pendiente.toFixed(0);
+            document.getElementById('stat-pendiente-count').textContent = `${countPend} pendientes`;
+
+            document.getElementById('stat-faltante').textContent = '$' + faltante.toFixed(0);
+            document.getElementById('stat-avance-pct').textContent = `${pct}% de la meta de $600`;
+
+            // Contadores en pestañas de filtro
+            document.getElementById('count-todos').textContent = allAportes.length;
+            document.getElementById('count-pendientes').textContent = countPend;
+            document.getElementById('count-confirmados').textContent = countConf;
+
+            // Filtrar aportes según selección
+            let list = allAportes;
+            if (currentFilter === 'pendiente') {
+                list = allAportes.filter(a => a.estado !== 'confirmado');
+            } else if (currentFilter === 'confirmado') {
+                list = allAportes.filter(a => a.estado === 'confirmado');
+            }
+
+            const tbody = document.getElementById('admin-table-body');
+            if (list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-slate-400">No hay aportes en este filtro.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = list.map(a => {
+                const isConfirmed = a.estado === 'confirmado';
+                const dateStr = a.created_at ? new Date(a.created_at).toLocaleString('es-VE', { 
+                    day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true 
+                }) : 'Hoy';
+
+                const isPm = a.metodo === 'pago_movil';
+                const metodoBadge = isPm
+                    ? `<span class="font-medium text-slate-800"><i class="fa-solid fa-mobile-screen text-blue-600 mr-1"></i>Pago Móvil</span> ${a.referencia_4dig ? `<span class="bg-blue-50 text-blue-800 px-1.5 py-0.5 rounded font-mono font-bold">Ref: ${escapeHtml(a.referencia_4dig)}</span>` : ''}`
+                    : `<span class="font-medium text-slate-800"><i class="fa-solid fa-money-bill-wave text-emerald-600 mr-1"></i>Efectivo</span> ${a.receptor_efectivo ? `<span class="text-slate-500">(${escapeHtml(a.receptor_efectivo)})</span>` : ''}`;
+
+                const estadoBadge = isConfirmed
+                    ? `<span class="inline-flex items-center gap-1 text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full text-[11px] font-bold border border-emerald-200">
+                           <i class="fa-solid fa-circle-check text-emerald-600"></i> Listo
+                       </span>`
+                    : `<span class="inline-flex items-center gap-1 text-amber-700 bg-amber-50 px-2.5 py-1 rounded-full text-[11px] font-bold border border-amber-200">
+                           <i class="fa-solid fa-clock text-amber-500 animate-pulse"></i> En revisión
+                       </span>`;
+
+                // Botones de acción
+                const actionButtons = isConfirmed
+                    ? `
+                        <button onclick="changeEstado('${a.id}', 'pendiente')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition text-[11px]" title="Revertir a revisión">
+                            <i class="fa-solid fa-rotate-left mr-1"></i> A revisión
+                        </button>
+                    `
+                    : `
+                        <button onclick="changeEstado('${a.id}', 'confirmado')" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold transition text-[11px] shadow-sm flex items-center gap-1" title="Validar aporte para que aparezca Listo en la web">
+                            <i class="fa-solid fa-check"></i> Validar (Listo)
+                        </button>
+                    `;
+
+                return `
+                    <tr class="hover:bg-slate-50/80 transition">
+                        <td class="py-3 px-4 font-mono text-slate-500 text-[11px] whitespace-nowrap">${dateStr}</td>
+                        <td class="py-3 px-4 font-bold text-slate-900">${escapeHtml(a.nombre_vecino)}</td>
+                        <td class="py-3 px-4 text-slate-600">${escapeHtml(a.calle_casa)}</td>
+                        <td class="py-3 px-4">${metodoBadge}</td>
+                        <td class="py-3 px-4 text-right font-black font-mono text-slate-900 text-sm">$${parseFloat(a.monto_usd).toFixed(0)}</td>
+                        <td class="py-3 px-4 text-center">${estadoBadge}</td>
+                        <td class="py-3 px-4 text-center">
+                            <div class="flex items-center justify-center gap-1.5">
+                                ${actionButtons}
+                                <button onclick="deleteAporte('${a.id}', '${escapeHtml(a.nombre_vecino)}', ${a.monto_usd})" class="p-1.5 text-slate-400 hover:text-red-600 rounded-lg hover:bg-red-50 transition" title="Eliminar fila">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // ACCIÓN: CAMBIAR ESTADO (VALIDAR O REVERTIR)
+        async function changeEstado(id, nuevoEstado) {
+            if (!supabaseClient) return;
+
+            try {
+                const { error } = await supabaseClient
+                    .from('tanquilla_aportes')
+                    .update({ estado: nuevoEstado })
+                    .eq('id', id);
+
+                if (error) {
+                    alert("Error al actualizar estado: " + error.message);
+                    return;
+                }
+
+                // Recargar datos
+                await loadAdminData();
+            } catch (err) {
+                console.error("Error en changeEstado:", err);
+            }
+        }
+
+        // ACCIÓN: ELIMINAR APORTE
+        async function deleteAporte(id, nombre, monto) {
+            if (!confirm(`¿Estás seguro de eliminar el aporte de $${monto} USD de ${nombre}?`)) {
+                return;
+            }
+
+            try {
+                const { error } = await supabaseClient
+                    .from('tanquilla_aportes')
+                    .delete()
+                    .eq('id', id);
+
+                if (error) {
+                    alert("Error al eliminar: " + error.message);
+                    return;
+                }
+
+                await loadAdminData();
+            } catch (err) {
+                console.error("Error al eliminar:", err);
+            }
+        }
+
+        // ACCIÓN: REGISTRO MANUAL DIRECTO DESDE ADMIN
+        async function handleManualSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-manual-submit');
+            btn.disabled = true;
+
+            const nombre = document.getElementById('manual-nombre').value.trim();
+            const casa = document.getElementById('manual-casa').value.trim();
+            const metodo = document.getElementById('manual-metodo').value;
+            const monto = parseFloat(document.getElementById('manual-monto').value);
+
+            const payload = {
+                nombre_vecino: nombre,
+                calle_casa: casa,
+                metodo: metodo,
+                monto_usd: monto,
+                receptor_efectivo: metodo === 'efectivo' ? 'Recibido por Comité' : null,
+                referencia_4dig: metodo === 'pago_movil' ? 'Directo' : null,
+                estado: 'confirmado' // Los cargados desde el admin entran directamente confirmados
+            };
+
+            try {
+                const { error } = await supabaseClient
+                    .from('tanquilla_aportes')
+                    .insert([payload]);
+
+                if (error) {
+                    alert("Error al registrar: " + error.message);
+                } else {
+                    document.getElementById('manual-nombre').value = '';
+                    document.getElementById('manual-casa').value = '';
+                    document.getElementById('manual-monto').value = '';
+                    await loadAdminData();
+                }
+            } catch (err) {
+                console.error(err);
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('[id^="filter-"]').forEach(btn => {
+                btn.className = "px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition flex items-center gap-1";
+            });
+
+            const activeBtn = document.getElementById('filter-' + filter);
+            if (activeBtn) {
+                activeBtn.className = "px-3 py-1.5 rounded-lg bg-white shadow-sm text-slate-900 font-bold transition flex items-center gap-1";
+            }
+            renderAdminDashboard();
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>"']/g, function(m) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', checkAuth);
+    </script>
+</body>
+</html>

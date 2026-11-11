@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reparación de Tanquilla • La California Sur</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Supabase JS Client CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        surface: {
+                            page: '#f8f9fa',
+                            card: '#ffffff',
+                            raised: '#f1f3f5',
+                            border: '#e5e7eb',
+                        },
+                        accent: {
+                            DEFAULT: '#166534', // Verde bosque civil
+                            hover: '#14532d',
+                            light: '#f0fdf4',
+                            border: '#bbf7d0',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+        /* Transiciones sobrias de 150ms según especificación de unslop */
+        * {
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+</head>
+<body class="bg-surface-page text-zinc-900 font-sans antialiased selection:bg-zinc-800 selection:text-white">
+
+    <!-- BARRA SUPERIOR DE CONTEXTO COMUNITARIO -->
+    <header class="border-b border-surface-border bg-surface-card sticky top-0 z-40">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-zinc-900 text-white flex items-center justify-center text-sm font-semibold">
+                    <i class="fa-solid fa-road"></i>
+                </div>
+                <div>
+                    <span class="font-semibold text-sm text-zinc-900 block leading-tight">La California Sur</span>
+                    <span class="text-xs text-zinc-500 font-mono">Comité Vecinal • Tanquilla 2026</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 text-xs font-medium text-zinc-600">
+                <a href="#avance" class="hidden sm:inline hover:text-zinc-900 transition-colors">Avance</a>
+                <a href="#pago" class="hidden sm:inline hover:text-zinc-900 transition-colors">Cuentas</a>
+                <a href="#aportar" class="bg-zinc-900 hover:bg-zinc-800 text-white px-3.5 py-1.5 rounded-lg transition-colors font-medium">
+                    Reportar aporte
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-12">
+
+        <!-- HERO COMPACTO Y SOBRIO -->
+        <section class="space-y-4">
+            <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-zinc-100 border border-zinc-200 text-zinc-700 text-xs font-mono">
+                <span>Presupuesto comunitario: $600 USD</span>
+                <span class="text-zinc-300">•</span>
+                <span class="text-zinc-500">Reparación vial</span>
+            </div>
+
+            <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight text-zinc-950 max-w-2xl leading-snug">
+                Reparación de la tanquilla de la urbanización
+            </h1>
+
+            <p class="text-zinc-600 text-base max-w-2xl leading-relaxed">
+                El marco y la tapa de la tanquilla presentan desgaste estructural por el tránsito continuo de vehículos. Con el aporte voluntario de quienes puedan colaborar cubriremos el material de herrería pesada, el vaciado en concreto reforzado y la mano de obra.
+            </p>
+        </section>
+
+        <!-- TABLERO DE AVANCE DE RECAUDACIÓN (UNSLOPPED) -->
+        <section id="avance" class="bg-surface-card border border-surface-border rounded-2xl p-6 sm:p-8 space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-zinc-100 pb-4">
+                <div>
+                    <h2 class="text-base font-semibold text-zinc-900">Estado de recaudación</h2>
+                    <p class="text-xs text-zinc-500">Actualizado con la base de datos comunitaria</p>
+                </div>
+                <div class="text-left sm:text-right font-mono">
+                    <span class="text-xs text-zinc-500 block">Meta requerida</span>
+                    <span class="text-2xl font-semibold text-zinc-900 tabular-nums">$600 <span class="text-xs font-normal text-zinc-500">USD</span></span>
+                </div>
+            </div>
+
+            <!-- BARRA DE PROGRESO DE CIMENTACIÓN -->
+            <div class="space-y-2">
+                <div class="w-full bg-zinc-100 rounded-lg h-5 overflow-hidden p-0.5 border border-zinc-200">
+                    <div id="progress-bar" class="h-full bg-accent rounded-md transition-all duration-500 ease-out flex items-center justify-end pr-2 text-white text-[11px] font-mono font-semibold tabular-nums" style="width: 2%;">
+                        2%
+                    </div>
+                </div>
+                <div class="flex justify-between text-xs font-mono text-zinc-400">
+                    <span>$0</span>
+                    <span>$150 (25%)</span>
+                    <span>$300 (50%)</span>
+                    <span>$450 (75%)</span>
+                    <span>$600 (Meta)</span>
+                </div>
+            </div>
+
+            <!-- CONTADORES NUMÉRICOS PRECISOS -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                <div class="p-4 rounded-xl bg-surface-raised border border-zinc-200/60">
+                    <span class="text-xs font-medium text-zinc-500 block">Recaudado</span>
+                    <span id="collected-amount" class="text-2xl font-semibold text-zinc-900 font-mono tabular-nums block mt-0.5">$10</span>
+                    <span class="text-[11px] text-zinc-400 mt-1 block">Aportes en caja</span>
+                </div>
+                <div class="p-4 rounded-xl bg-surface-raised border border-zinc-200/60">
+                    <span class="text-xs font-medium text-zinc-500 block">Faltante</span>
+                    <span id="missing-amount" class="text-2xl font-semibold text-zinc-700 font-mono tabular-nums block mt-0.5">$590</span>
+                    <span class="text-[11px] text-zinc-400 mt-1 block">Para completar la obra</span>
+                </div>
+                <div class="p-4 rounded-xl bg-surface-raised border border-zinc-200/60">
+                    <span class="text-xs font-medium text-zinc-500 block">Colaboraciones</span>
+                    <span id="total-aportes-count" class="text-2xl font-semibold text-zinc-900 font-mono tabular-nums block mt-0.5">1</span>
+                    <span class="text-[11px] text-zinc-400 mt-1 block">Vecinos registrados</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN DIVIDIDA: CUENTAS DE PAGO + FORMULARIO DE APORTE -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+            <!-- COLUMNA 1: DATOS DE PAGO (5 COLUMNAS) -->
+            <section id="pago" class="lg:col-span-5 space-y-6">
+                <div>
+                    <h2 class="text-lg font-semibold text-zinc-900">Datos para colaborar</h2>
+                    <p class="text-xs text-zinc-500 mt-0.5">Vía Pago Móvil o en efectivo con los voceros</p>
+                </div>
+
+                <!-- Tarjeta Pago Móvil -->
+                <div class="bg-surface-card border border-surface-border rounded-2xl p-5 space-y-4">
+                    <div class="flex items-center justify-between border-b border-zinc-100 pb-3">
+                        <span class="text-xs font-semibold text-zinc-800 flex items-center gap-2">
+                            <i class="fa-solid fa-mobile-screen text-zinc-500"></i> Pago Móvil
+                        </span>
+                        <span class="text-[11px] font-mono bg-zinc-100 text-zinc-600 px-2 py-0.5 rounded">Tasa oficial BCV</span>
+                    </div>
+
+                    <div class="space-y-2 text-xs font-mono">
+                        <div class="flex justify-between items-center py-1.5 px-2.5 bg-surface-raised rounded-lg border border-zinc-200/50">
+                            <span class="text-zinc-500 font-sans">Banco</span>
+                            <span class="font-medium text-zinc-800">BBVA Provincial (0108)</span>
+                        </div>
+                        <div class="flex justify-between items-center py-1.5 px-2.5 bg-surface-raised rounded-lg border border-zinc-200/50">
+                            <span class="text-zinc-500 font-sans">Teléfono</span>
+                            <div class="flex items-center gap-2">
+                                <span class="font-medium text-zinc-900">0414-311-4736</span>
+                                <button onclick="copyToClipboard('04143114736', this)" class="text-zinc-500 hover:text-zinc-900" title="Copiar teléfono">
+                                    <i class="fa-regular fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center py-1.5 px-2.5 bg-surface-raised rounded-lg border border-zinc-200/50">
+                            <span class="text-zinc-500 font-sans">Cédula / RIF</span>
+                            <div class="flex items-center gap-2">
+                                <span class="font-medium text-zinc-900">V-11.725.480</span>
+                                <button onclick="copyToClipboard('11725480', this)" class="text-zinc-500 hover:text-zinc-900" title="Copiar cédula">
+                                    <i class="fa-regular fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-[11px] text-zinc-400 leading-tight">
+                        Titular: Rosalicia Romero.
+                    </p>
+                </div>
+
+                <!-- Tarjeta Efectivo -->
+                <div class="bg-surface-card border border-surface-border rounded-2xl p-5 space-y-3">
+                    <div class="border-b border-zinc-100 pb-3">
+                        <span class="text-xs font-semibold text-zinc-800 flex items-center gap-2">
+                            <i class="fa-solid fa-money-bill-wave text-zinc-500"></i> Aporte en efectivo
+                        </span>
+                    </div>
+                    <p class="text-xs text-zinc-600 leading-relaxed">
+                        Puedes entregar dólares en efectivo a los voceros designados de tu calle. Se anota en la lista física y se registra en este panel para seguimiento de todos.
+                    </p>
+                    <a href="https://wa.me/584143114736?text=Hola%2C%20soy%20vecino%20de%20La%20California%20Sur%20y%20quiero%20coordinar%20mi%20aporte%20en%20efectivo%20para%20la%20tanquilla." target="_blank" class="inline-flex items-center gap-2 text-xs font-medium text-zinc-700 hover:text-zinc-900 border border-zinc-200 rounded-lg px-3 py-2 bg-surface-raised hover:bg-zinc-200/70 transition-colors">
+                        <i class="fa-brands fa-whatsapp text-zinc-600"></i> Coordinar entrega por WhatsApp
+                    </a>
+                </div>
+
+                <!-- ALCANCE TÉCNICO COMPACTO -->
+                <div class="bg-surface-card border border-surface-border rounded-2xl p-5 space-y-3">
+                    <h3 class="text-xs font-semibold text-zinc-800">Desglose de los $600</h3>
+                    <ul class="text-xs text-zinc-600 space-y-2">
+                        <li class="flex items-start gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-zinc-400 mt-1.5 shrink-0"></span>
+                            <span><strong>Marco y tapa:</strong> Herrería y materiales para soportar paso peatonal incluso vehicular.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-zinc-400 mt-1.5 shrink-0"></span>
+                            <span><strong>Mano de obra:</strong> Personal calificado, traslados de materiales y supervisión comunitaria directa.</span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- COLUMNA 2: FORMULARIO DE REPORTE (7 COLUMNAS) -->
+            <section id="aportar" class="lg:col-span-7 bg-surface-card border border-surface-border rounded-2xl p-6 sm:p-8 space-y-6">
+                <div>
+                    <h2 class="text-lg font-semibold text-zinc-900">Reporte de aporte</h2>
+                    <p class="text-xs text-zinc-500 mt-0.5">Ingresa los datos para sumar tu colaboración al avance público</p>
+                </div>
+
+                <form id="aporte-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                    <!-- Selector de método sobrio -->
+                    <div>
+                        <label class="block text-xs font-medium text-zinc-700 mb-1.5">Método utilizado</label>
+                        <div class="grid grid-cols-2 gap-2 p-1 bg-surface-raised rounded-xl border border-zinc-200">
+                            <button type="button" id="tab-pm" onclick="selectMethod('pago_movil')" class="py-2 text-xs font-semibold rounded-lg bg-surface-card text-zinc-900 shadow-sm border border-zinc-200/80 transition-all">
+                                Pago Móvil
+                            </button>
+                            <button type="button" id="tab-ef" onclick="selectMethod('efectivo')" class="py-2 text-xs font-medium rounded-lg text-zinc-500 hover:text-zinc-800 transition-all">
+                                Efectivo (USD)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Nombre del vecino -->
+                    <div>
+                        <label for="nombre_vecino" class="block text-xs font-medium text-zinc-700 mb-1">Nombre o familia</label>
+                        <input type="text" id="nombre_vecino" required placeholder="Ej. Familia Romero o Carlos Méndez" class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-zinc-300 focus:outline-none focus:ring-1 focus:ring-zinc-800 focus:border-zinc-800 bg-surface-card">
+                    </div>
+
+                    <!-- Calle y Casa -->
+                    <div>
+                        <label for="calle_casa" class="block text-xs font-medium text-zinc-700 mb-1">Calle y número de casa</label>
+                        <input type="text" id="calle_casa" required placeholder="Ej. Calle 3, Casa #14" class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-zinc-300 focus:outline-none focus:ring-1 focus:ring-zinc-800 focus:border-zinc-800 bg-surface-card">
+                    </div>
+
+                    <!-- Monto -->
+                    <div>
+                        <label for="monto_usd" class="block text-xs font-medium text-zinc-700 mb-1">Monto aportado (en USD)</label>
+                        <div class="relative">
+                            <span class="absolute left-3.5 top-2.5 text-zinc-400 font-mono text-xs">$</span>
+                            <input type="number" id="monto_usd" step="0.5" min="1" required placeholder="20" class="w-full text-xs pl-7 pr-3.5 py-2.5 rounded-xl border border-zinc-300 focus:outline-none focus:ring-1 focus:ring-zinc-800 focus:border-zinc-800 bg-surface-card font-mono tabular-nums font-semibold">
+                        </div>
+                        <p class="text-[11px] text-zinc-400 mt-1">Si pagaste en bolívares por Pago Móvil, coloca su equivalente al cambio BCV.</p>
+                    </div>
+
+                    <!-- Campo dinámico: Pago Móvil (solo 4 dígitos) -->
+                    <div id="field-pm">
+                        <label for="referencia_4dig" class="block text-xs font-medium text-zinc-700 mb-1">Últimos 4 dígitos de la referencia</label>
+                        <input type="text" id="referencia_4dig" maxlength="6" placeholder="4891" class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-zinc-300 focus:outline-none focus:ring-1 focus:ring-zinc-800 focus:border-zinc-800 bg-surface-card font-mono tracking-wider">
+                        <p class="text-[11px] text-zinc-400 mt-1">Solo los 4 números finales del comprobante.</p>
+                    </div>
+
+                    <!-- Campo dinámico: Efectivo (Vocero receptor) -->
+                    <div id="field-ef" class="hidden">
+                        <label for="receptor_efectivo" class="block text-xs font-medium text-zinc-700 mb-1">Vocero que recibió el efectivo</label>
+                        <input type="text" id="receptor_efectivo" placeholder="Ej. Entregado a Víctor / Vocero Calle 3" class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-zinc-300 focus:outline-none focus:ring-1 focus:ring-zinc-800 focus:border-zinc-800 bg-surface-card">
+                    </div>
+
+                    <!-- Botón de acción -->
+                    <div class="pt-2">
+                        <button type="submit" id="btn-submit" class="w-full py-3 bg-zinc-900 hover:bg-zinc-800 text-white font-medium rounded-xl text-xs transition-colors flex items-center justify-center gap-2">
+                            <span>Registrar colaboración</span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Aviso de confirmación de WhatsApp tras registrar -->
+                <div id="post-submit-box" class="hidden p-4 rounded-xl bg-accent-light border border-accent-border space-y-3">
+                    <div class="flex items-start gap-2.5">
+                        <i class="fa-solid fa-check text-accent mt-0.5 text-xs"></i>
+                        <div class="text-xs text-zinc-800 space-y-1">
+                            <p class="font-semibold">Aporte guardado con éxito en el sistema.</p>
+                            <p class="text-zinc-600">Puedes enviar el comprobante al comité vecinal por WhatsApp con los datos ya ordenados:</p>
+                        </div>
+                    </div>
+                    <a id="btn-whatsapp-confirm" href="#" target="_blank" class="inline-flex items-center gap-2 text-xs font-semibold text-accent hover:text-accent-hover bg-white border border-accent-border px-3.5 py-2 rounded-lg transition-colors">
+                        <i class="fa-brands fa-whatsapp text-sm"></i> Enviar comprobante por WhatsApp
+                    </a>
+                </div>
+            </section>
+        </div>
+
+        <!-- LISTA PÚBLICA DE APORTES VECINALES (TRANSPARENCIA) -->
+        <section class="bg-surface-card border border-surface-border rounded-2xl p-6 sm:p-8 space-y-4">
+            <div class="flex items-center justify-between border-b border-zinc-100 pb-3">
+                <div>
+                    <h2 class="text-base font-semibold text-zinc-900">Historial público de aportes</h2>
+                    <p class="text-xs text-zinc-500">Transparencia para todos los vecinos</p>
+                </div>
+                <button onclick="loadAportes()" class="text-xs text-zinc-500 hover:text-zinc-900 font-mono transition-colors">
+                    <i class="fa-solid fa-arrows-rotate mr-1"></i> Actualizar
+                </button>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="text-zinc-500 font-medium border-b border-zinc-200">
+                            <th class="py-2.5 px-3">Vecino / Familia</th>
+                            <th class="py-2.5 px-3">Ubicación</th>
+                            <th class="py-2.5 px-3">Método</th>
+                            <th class="py-2.5 px-3 text-right">Monto</th>
+                            <th class="py-2.5 px-3 text-center">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="aportes-table-body" class="divide-y divide-zinc-100 font-sans">
+                        <tr>
+                            <td colspan="5" class="py-8 text-center text-zinc-400 font-mono text-xs">
+                                Cargando aportes desde Supabase...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER SIMPLE Y HONESTO -->
+    <footer class="border-t border-surface-border py-8 text-center text-xs text-zinc-500 font-mono">
+        <div class="max-w-5xl mx-auto px-4 space-y-1">
+            <p>Urbanización La California Sur • Comité Vecinal Pro-Reparación de Tanquilla</p>
+            <p class="text-zinc-400">Presupuesto comunitario auditado: $600 USD</p>
+        </div>
+    </footer>
+
+    <!-- LOGICA DE INTEGRACION (SUPABASE + INTERACTIVIDAD) -->
+    <script>
+        const SUPABASE_URL = "https://wfuynlfknawjkhevooal.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndmdXlubGZrbmF3amtoZXZvb2FsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwNTk2OTAsImV4cCI6MjEwMDYzNTY5MH0.Pup4FUtdlupIM5CRDcWqKTtwV2K0Ty3Or4HH9CURQOM";
+        const GOAL = 600;
+
+        let activeMethod = 'pago_movil';
+        let supabaseClient = null;
+
+        if (window.supabase) {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        }
+
+        function selectMethod(method) {
+            activeMethod = method;
+            const tabPm = document.getElementById('tab-pm');
+            const tabEf = document.getElementById('tab-ef');
+            const fieldPm = document.getElementById('field-pm');
+            const fieldEf = document.getElementById('field-ef');
+            const inputRef = document.getElementById('referencia_4dig');
+            const inputRec = document.getElementById('receptor_efectivo');
+
+            if (method === 'pago_movil') {
+                tabPm.className = "py-2 text-xs font-semibold rounded-lg bg-surface-card text-zinc-900 shadow-sm border border-zinc-200/80 transition-all";
+                tabEf.className = "py-2 text-xs font-medium rounded-lg text-zinc-500 hover:text-zinc-800 transition-all";
+                fieldPm.classList.remove('hidden');
+                fieldEf.classList.add('hidden');
+                inputRef.required = true;
+                inputRec.required = false;
+            } else {
+                tabEf.className = "py-2 text-xs font-semibold rounded-lg bg-surface-card text-zinc-900 shadow-sm border border-zinc-200/80 transition-all";
+                tabPm.className = "py-2 text-xs font-medium rounded-lg text-zinc-500 hover:text-zinc-800 transition-all";
+                fieldEf.classList.remove('hidden');
+                fieldPm.classList.add('hidden');
+                inputRef.required = false;
+                inputRec.required = true;
+            }
+        }
+
+        async function loadAportes() {
+            if (!supabaseClient) return;
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('tanquilla_aportes')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) {
+                    console.error("Error consultando Supabase:", error);
+                    return;
+                }
+
+                updateDashboard(data || []);
+            } catch (err) {
+                console.error("Fallo de red:", err);
+            }
+        }
+
+        function updateDashboard(aportes) {
+            let total = 0;
+            aportes.forEach(a => {
+                total += parseFloat(a.monto_usd || 0);
+            });
+
+            const pct = Math.min(100, Math.round((total / GOAL) * 100));
+            const missing = Math.max(0, GOAL - total);
+
+            // Barra y etiquetas
+            const bar = document.getElementById('progress-bar');
+            bar.style.width = Math.max(pct, 5) + '%';
+            bar.textContent = pct + '%';
+
+            document.getElementById('collected-amount').textContent = '$' + total.toFixed(0);
+            document.getElementById('missing-amount').textContent = '$' + missing.toFixed(0);
+            document.getElementById('total-aportes-count').textContent = aportes.length;
+
+            // Tabla
+            const tbody = document.getElementById('aportes-table-body');
+            if (!aportes || aportes.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="py-6 text-center text-zinc-400 font-mono">No hay aportes registrados aún.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = aportes.map(a => {
+                const isPm = a.metodo === 'pago_movil';
+                const methodLabel = isPm 
+                    ? `<span class="font-mono text-zinc-700">Pago Móvil ${a.referencia_4dig ? `(*${escapeHtml(a.referencia_4dig)})` : ''}</span>`
+                    : `<span class="font-mono text-zinc-700">Efectivo</span>`;
+
+                return `
+                    <tr class="hover:bg-zinc-50/80 transition-colors">
+                        <td class="py-2.5 px-3 font-medium text-zinc-900">${escapeHtml(a.nombre_vecino)}</td>
+                        <td class="py-2.5 px-3 text-zinc-600">${escapeHtml(a.calle_casa)}</td>
+                        <td class="py-2.5 px-3">${methodLabel}</td>
+                        <td class="py-2.5 px-3 text-right font-mono font-semibold text-zinc-900 tabular-nums">$${parseFloat(a.monto_usd).toFixed(0)}</td>
+                        <td class="py-2.5 px-3 text-center">
+                            <span class="inline-flex items-center gap-1 text-[11px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                                Confirmado
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit');
+            btn.disabled = true;
+            btn.textContent = "Guardando...";
+
+            const nombre = document.getElementById('nombre_vecino').value.trim();
+            const calleCasa = document.getElementById('calle_casa').value.trim();
+            const monto = parseFloat(document.getElementById('monto_usd').value);
+            const ref4 = activeMethod === 'pago_movil' ? document.getElementById('referencia_4dig').value.trim() : null;
+            const receptor = activeMethod === 'efectivo' ? document.getElementById('receptor_efectivo').value.trim() : null;
+
+            const payload = {
+                nombre_vecino: nombre,
+                calle_casa: calleCasa,
+                metodo: activeMethod,
+                monto_usd: monto,
+                referencia_4dig: ref4,
+                receptor_efectivo: receptor,
+                estado: 'confirmado'
+            };
+
+            try {
+                if (supabaseClient) {
+                    const { error } = await supabaseClient.from('tanquilla_aportes').insert([payload]);
+                    if (error) {
+                        alert("Error al registrar: " + error.message);
+                        btn.disabled = false;
+                        btn.textContent = "Registrar colaboración";
+                        return;
+                    }
+                }
+
+                await loadAportes();
+
+                // Preparar mensaje de WhatsApp pre-llenado
+                const metodoStr = activeMethod === 'pago_movil' ? `Pago Móvil (Ref: ${ref4})` : `Efectivo (${receptor || 'Entregado'})`;
+                const textMsg = encodeURIComponent(
+                    `Hola Comité, acabo de registrar mi colaboración para la tanquilla:\n\n` +
+                    `Vecino: ${nombre}\n` +
+                    `Ubicación: ${calleCasa}\n` +
+                    `Monto: $${monto} USD\n` +
+                    `Método: ${metodoStr}\n\n` +
+                    `Envío este mensaje para el control de la comunidad.`
+                );
+
+                document.getElementById('btn-whatsapp-confirm').href = `https://wa.me/584143114736?text=${textMsg}`;
+                document.getElementById('post-submit-box').classList.remove('hidden');
+
+                document.getElementById('aporte-form').reset();
+                selectMethod('pago_movil');
+            } catch (err) {
+                console.error(err);
+                alert("Ocurrió un error.");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Registrar colaboración";
+            }
+        }
+
+        function copyToClipboard(text, btnElement) {
+            navigator.clipboard.writeText(text).then(() => {
+                const icon = btnElement.querySelector('i');
+                if (icon) {
+                    icon.className = 'fa-solid fa-check text-emerald-600';
+                    setTimeout(() => {
+                        icon.className = 'fa-regular fa-copy';
+                    }, 1800);
+                }
+            });
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>"']/g, function(m) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', loadAportes);
+    </script>
+</body>
+</html>
