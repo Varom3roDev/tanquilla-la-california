@@ -571,6 +571,13 @@
                     }
                 }
 
+                // Disparo automático de notificación a WhatsApp de Rosalicia vía n8n + Gateway
+                fetch('https://wfuynlfknawjkhevooal.supabase.co/functions/v1/jarvis-gateway/api/webhook/tanquilla-aporte', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                }).catch(e => console.warn('Notificación automática:', e));
+
                 // Refrescar lista de inmediato
                 await loadAportesFromSupabase();
 
